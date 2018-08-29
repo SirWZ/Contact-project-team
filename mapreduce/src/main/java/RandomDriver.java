@@ -109,7 +109,7 @@ public class RandomDriver {
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(FloatWritable.class);
 
-        FileOutputFormat.setOutputPath(job, new Path("./outputRandom"));
+        FileOutputFormat.setOutputPath(job, new Path("mapreduce/outputRandom"));
 
         job.waitForCompletion(true);
 

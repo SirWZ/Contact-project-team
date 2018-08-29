@@ -11,6 +11,7 @@
         <module>mapreduce</module>
         <module>common</module>
         <module>test</module>
+        <module>akka</module>
     </modules>
     <packaging>pom</packaging>
 

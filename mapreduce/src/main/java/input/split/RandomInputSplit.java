@@ -9,6 +9,7 @@ import org.apache.hadoop.mapreduce.InputSplit;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.util.Random;
 
 /**
  * <p>
@@ -52,15 +53,11 @@ public class RandomInputSplit extends InputSplit implements Writable {
         this.end = end;
 
         int len = this.end - this.start + 1;
-        int index = start;
         FloatWritable[] result = new FloatWritable[len];
+        Random random = new Random();
         for (int i = 0; i < len; i++) {
-            float f = RandomInputFormat.floatValues[index];
-            FloatWritable fw = new FloatWritable(f);
-
+            FloatWritable fw = new FloatWritable(random.nextFloat());
             result[i] = fw;
-
-            index++;
         }
         floatArray.set(result);
     }

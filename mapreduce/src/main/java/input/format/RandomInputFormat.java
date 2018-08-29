@@ -40,24 +40,20 @@ import java.util.Random;
  * @version 1.0.0
  */
 public class RandomInputFormat extends InputFormat<IntWritable, ArrayWritable> {
-    public static float[] floatValues = null;
+
 
     @Override
     public List<InputSplit> getSplits(JobContext jobContext) throws IOException, InterruptedException {
         int NumOfValues = jobContext.getConfiguration().getInt("lucl.random.nums", 100);
-        floatValues = new float[NumOfValues];
-        Random random = new Random();
-        for (int i = 0; i < NumOfValues; i++) {
-            floatValues[i] = random.nextFloat();
-        }
         int NumSplits = jobContext.getConfiguration().getInt("mapreduce.job.maps", 2);
+
         int begin = 0;
         int length = (int) Math.floor(NumOfValues / NumSplits);
         int end = length - 1;
 
         List<InputSplit> splits = new ArrayList<InputSplit>();
 
-        for (int i = 0; i < NumSplits - 1; i++) {    // 2个splits分片，分别为0和1
+        for (int i = 0; i < NumSplits; i++) {
             RandomInputSplit split = new RandomInputSplit(begin, end);
             splits.add(split);
             begin = end + 1;

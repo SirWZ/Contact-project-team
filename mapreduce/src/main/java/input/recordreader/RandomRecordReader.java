@@ -40,7 +40,7 @@ import java.io.IOException;
  */
 public class RandomRecordReader extends RecordReader<IntWritable, ArrayWritable> {
 
-    private int start;
+      private int start;
     private int end;
     private int index;
 
