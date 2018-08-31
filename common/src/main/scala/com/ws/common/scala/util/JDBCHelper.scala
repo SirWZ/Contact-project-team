@@ -42,7 +42,7 @@ class JDBCHelper private(var maxActiveSize: Int) {
   properties.load(this.getClass.getClassLoader.getResourceAsStream("conf.properties"))
   maxActiveSize = Math.max(maxActiveSize, initSize)
 
-  private  val url: String = properties.getProperty("jdbc.url")
+  private val url: String = properties.getProperty("jdbc.url")
   private val user: String = properties.getProperty("jdbc.user")
   private val password: String = properties.getProperty("jdbc.password")
   private val driver: String = properties.getProperty("jdbc.driver")
@@ -70,10 +70,10 @@ class JDBCHelper private(var maxActiveSize: Int) {
     var conn: DruidPooledConnection = getConnection
     var pstmt: PreparedStatement = conn.prepareStatement(sql)
     params.zipWithIndex.foreach { case (parameter, i) => pstmt.setObject(i + 1, parameter) }
-    Try(callback(pstmt.executeQuery)) {
-      case _ => pstmt.close()
-    }
-
+    try
+      callback(pstmt.executeQuery)
+    finally
+      pstmt.close()
   }
 
   def executeUpdate(sql: String, params: Array[AnyRef]): Int = {
@@ -83,7 +83,10 @@ class JDBCHelper private(var maxActiveSize: Int) {
     var pstmt = conn.prepareStatement(sql)
     params.zipWithIndex.foreach { case (parameter, i) => pstmt.setObject(i + 1, parameter) }
     rtn = pstmt.executeUpdate
-    conn.commit()
+    try
+      conn.commit()
+    finally
+      pstmt.close()
     rtn
   }
 
@@ -100,7 +103,10 @@ class JDBCHelper private(var maxActiveSize: Int) {
     }
 
     val rtn = pstmt.executeBatch
-    conn.commit()
+    try
+      conn.commit()
+    finally
+      pstmt.close()
     rtn
   }
 }

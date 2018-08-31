@@ -1,7 +1,12 @@
+import akka.actor.ActorSystem
+import com.ws.akka.scala.demo02.{Device, DeviceManager}
+
+import scala.concurrent.duration._
+
 /**
   *
   * <p>
-  * 类名称：Demo01
+  * 类名称：DeviceTest
   * </p>
   * <p>
   * 类描述：${DESCRIPTION}
@@ -10,7 +15,7 @@
   * 创建人：sun
   * </p>
   * <p>
-  * 创建时间：2018-08-29 8:33
+  * 创建时间：2018-08-30 8:51
   * </p>
   * <p>
   * 修改人：
@@ -28,8 +33,12 @@
   * @version 1.0.0
   *
   */
-object Demo01 {
+class DeviceTest {
   def main(args: Array[String]): Unit = {
+
+    val system = ActorSystem("driverTest")
+    val deviceActor = system.actorOf(Device.props("group", "device"))
+
 
   }
 
