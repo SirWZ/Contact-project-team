@@ -40,7 +40,7 @@ import java.io.IOException;
  */
 public class RandomRecordReader extends RecordReader<IntWritable, ArrayWritable> {
 
-      private int start;
+    private int start;
     private int end;
     private int index;
 
@@ -50,7 +50,7 @@ public class RandomRecordReader extends RecordReader<IntWritable, ArrayWritable>
 
     @Override
     public void initialize(InputSplit inputSplit, TaskAttemptContext taskAttemptContext) throws IOException, InterruptedException {
-        this.rsplit = (RandomInputSplit)inputSplit;
+        this.rsplit = (RandomInputSplit) inputSplit;
         this.start = this.rsplit.getStart();
         this.end = this.rsplit.getEnd();
         this.index = this.start;
@@ -89,7 +89,7 @@ public class RandomRecordReader extends RecordReader<IntWritable, ArrayWritable>
         if (this.index == this.end) {
             return 0F;
         }
-        return Math.min(1.0F, (this.index - this.start) / (float)(this.end - this.start));
+        return Math.min(1.0F, (this.index - this.start) / (float) (this.end - this.start));
     }
 
     @Override
