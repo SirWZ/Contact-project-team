@@ -54,13 +54,13 @@ public class PutHDFSandSolr {
     public void test() throws UnsupportedEncodingException, InterruptedException {
         File file = new File("C:\\Users\\sun\\Desktop\\pdf");
 
-        Arrays.stream(Objects.requireNonNull(file.listFiles())).forEach(this::upload);
+//        Arrays.stream(Objects.requireNonNull(file.listFiles())).forEach(this::upload);
 
         fixedThreadPool.awaitTermination(333, TimeUnit.HOURS);
 
     }
 
-    public void upload(File file) {
+    public void upload(final File file) {
         fixedThreadPool.execute(new Runnable() {
             @Override
             public void run() {

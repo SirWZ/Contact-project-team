@@ -73,21 +73,47 @@ public class HdfsRestApiDemo {
 
 
     @Test
-    public void upFile() {
-
+    public void upFile1() {
         //本地文件绝对路径
-        String filePath = "C:\\Users\\sun\\Desktop\\zz.zip";
+        String filePath = "C:\\Users\\sun\\Desktop\\banner2.jpg";
 
         File file = new File(filePath);
 
         String fileName = file.getName();
 
-        String url = "http://10.101.240.83:50070/webhdfs/v1/user/video/test/zz.zip?op=CREATE&overwrite=true";
+        String url = "http://10.101.240.83:50070/webhdfs/v1/user/sustainableDevelpoment/annex/CA9160F8617F4654AA70569839DCC5F2/banner2.jpg?op=CREATE";
+        String returnAddress = null;
+
+        HttpClientUtil.HttpResponse multipart = HttpClientUtil.httpPutFormMultipart(url, Collections.singletonList(file), null, "gbk");
+        for (Header header : multipart.getHeaders()) {
+            if (header.getName().equals("Location")) {
+                returnAddress = header.getValue();
+                break;
+            }
+        }
+    }
+
+
+    @Test
+    public void upFile() {
+
+        //本地文件绝对路径
+        String filePath = "C:\\Users\\sun\\Desktop\\banner2.jpg";
+
+        File file = new File(filePath);
+
+        String fileName = file.getName();
+
+        //将文件转成List集合
+        List<File> files = Collections.singletonList(file);
+
+        String url = "http://10.101.240.83:50070/webhdfs/v1/user/sustainableDevelpoment/annex/CA9160F8617F4654AA70569839DCC5F2/banner2.jpg?op=CREATE&overwrite=true";
         String address = null;
         String returnAddress = null;
 
         //第一次发送 成功返回307 从消息头获取文件上传地址
         HttpClientUtil.HttpResponse response = HttpClientUtil.httpPutRaw(url, "{}", null, null);
+//        HttpClientUtil.HttpResponse response = HttpClientUtil.httpPutFormMultipart(url, files, null, "gbk");
         Header[] headers = response.getHeaders();
 
         //获取文件上传地址
@@ -98,8 +124,6 @@ public class HdfsRestApiDemo {
             }
         }
 
-        //将文件转成List集合
-        List<File> files = Collections.singletonList(file);
 
         if (address != null) {
             HttpClientUtil.HttpResponse multipart = HttpClientUtil.httpPutFormMultipart(address, files, null, "gbk");

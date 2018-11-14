@@ -19,6 +19,9 @@
         <module>restAPI</module>
         <module>bash</module>
         <module>kafka</module>
+        <module>hbase</module>
+        <module>hdfs</module>
+        <module>hdfsclient</module>
     </modules>
     <packaging>pom</packaging>
 

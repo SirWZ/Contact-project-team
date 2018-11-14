@@ -12,13 +12,11 @@
     <artifactId>solr</artifactId>
 
 
+    <properties>
+        <jdk.version>1.7</jdk.version>
+    </properties>
     <dependencies>
-        <dependency>
-            <groupId>org.apache.hadoop</groupId>
-            <artifactId>hadoop-hdfs-client</artifactId>
-            <version>3.1.0.3.0.0.0-1634</version>
-            <scope>provided</scope>
-        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.apache.solr/solr-solrj -->
         <dependency>
             <groupId>org.apache.solr</groupId>
@@ -52,4 +50,72 @@
 
     </dependencies>
 
+    <build>
+
+
+
+
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>${jdk.version}</source>
+                    <target>${jdk.version}</target>
+                    <showWarnings>true</showWarnings>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>appassembler-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <executions>
+                    <execution>
+                        <!--appassembler:assemble-->
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>assemble</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+                <configuration>
+                    <repositoryLayout>flat</repositoryLayout>
+                    <configurationDirectory>conf</configurationDirectory>
+                    <configurationSourceDirectory>src/main/resources</configurationSourceDirectory>
+                    <copyConfigurationDirectory>true</copyConfigurationDirectory>
+                    <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
+                    <assembleDirectory>${project.build.directory}/runner</assembleDirectory>
+                    <!--java启动参数-->
+                    <extraJvmArguments>-Xms1024m</extraJvmArguments>
+                    <binFileExtensions>
+                        <unix>.sh</unix>
+                    </binFileExtensions>
+                    <platforms>
+                        <platform>windows</platform>
+                        <platform>unix</platform>
+                    </platforms>
+                    <repositoryName>lib</repositoryName>
+                    <programs>
+                        <program>
+                            <mainClass>com.ws.solr.UpFile2HDFS</mainClass>
+                            <name>start</name>
+                        </program>
+                    </programs>
+                </configuration>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+
+        </plugins>
+
+    </build>
 </project>
