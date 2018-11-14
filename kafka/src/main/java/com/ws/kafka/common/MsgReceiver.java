@@ -50,7 +50,67 @@ public class MsgReceiver implements Runnable {
         final KafkaConsumer<String, String> consumer = new KafkaConsumer<>(consumerConfig);
         String[] topics = alarmTopic.split(",");
         consumer.subscribe(Arrays.asList(topics), new KafkaConsumerRunner(consumer));
-        
+
+        //检查线程中断标志是否设置, 如果设置则表示外界想要停止该任务,终止该任务
+        try {
+            while (!Thread.currentThread().isInterrupted()) {
+                try {
+                    //查看该消费者是否有需要提交的偏移信息, 使用非阻塞读取
+                    Map<TopicPartition, OffsetAndMetadata> toCommit = commitQueue.poll();
+                    if (toCommit != null) {
+                        logger.debug("commit TopicPartition offset to kafka: " + toCommit);
+                        consumer.commitSync(toCommit);
+                    }
+                    //最多轮询100ms
+                    ConsumerRecords<String, String> records = consumer.poll(100);
+                    if (records.count() > 0) {
+                        logger.debug("poll records size: " + records.count());
+                    }
+                    for (TopicPartition topicPartition : records.partitions()) {
+                        RecordProcessor processTask = recordProcessorTasks.get(topicPartition);
+                        //如果当前分区还没有开始消费, 则就没有消费任务在map中
+                        if (processTask == null) {
+                            //生成新的处理任务和线程, 然后将其放入对应的map中进行保存
+                            processTask = new RecordProcessor(commitQueue, processorClazz);
+                            recordProcessorTasks.put(topicPartition, processTask);
+                            Thread thread = new Thread(processTask);
+                            thread.setName("Thread-for " + topicPartition.toString());
+                            logger.info("start Thread: " + thread.getName());
+                            thread.start();
+                            recordProcessorThreads.put(topicPartition, thread);
+                        }
+                        //将消息放到处理队列
+                        List<ConsumerRecord<String, String>> recordList = records.records(topicPartition);
+                        processTask.addRecordToQueue(recordList);
+                    }
+
+//                    for (final ConsumerRecord<String, String> record : records) {
+//                        String topic = record.topic();
+//                        int partition = record.partition();
+//                        TopicPartition topicPartition = new TopicPartition(topic, partition);
+//                        RecordProcessor processTask = recordProcessorTasks.get(topicPartition);
+//                        //如果当前分区还没有开始消费, 则就没有消费任务在map中
+//                        if (processTask == null) {
+//                            //生成新的处理任务和线程, 然后将其放入对应的map中进行保存
+//                            processTask = new RecordProcessor(commitQueue, processorClazz);
+//                            recordProcessorTasks.put(topicPartition, processTask);
+//                            Thread thread = new Thread(processTask);
+//                            thread.setName("Thread-for " + topicPartition.toString());
+//                            logger.info("start Thread: " + thread.getName());
+//                            thread.start();
+//                            recordProcessorThreads.put(topicPartition, thread);
+//                        }
+//                        //将消息放到
+//                        processTask.addRecordToQueue(record);
+//                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    logger.error("MsgReceiver exception " + e + " ignore it");
+                }
+            }
+        } finally {
+            consumer.close();
+        }
     }
 
     class KafkaConsumerRunner implements ConsumerRebalanceListener {

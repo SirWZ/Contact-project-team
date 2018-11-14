@@ -39,7 +39,7 @@ public class Application {
 
         MainKafkaProcessor kafkaProcessor = new MainKafkaProcessor();
 
-        kafkaProcessor.setServers("10.101.127.141:2181");
+        kafkaProcessor.setServers("10.101.127.166:2181");
         kafkaProcessor.setAlarmTopic("send_message");
         kafkaProcessor.setGroup("testasdasdasd");
         Class<?> clazz = Class.forName(Test.class.getName());

@@ -1,3 +1,10 @@
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+
+import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
+
 /**
  * <p>
  * 类名称：Test
@@ -27,4 +34,38 @@
  * @version 1.0.0
  */
 public class Test {
+
+    @org.junit.Test
+    public void test() throws InterruptedException {
+
+        BlockingQueue<String> queue = new LinkedBlockingQueue<>();
+        queue.put("A");
+        queue.put("b");
+        queue.put("c");
+        queue.put("d");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (!Thread.currentThread().isInterrupted()) {
+
+                    String poll = null;
+                    try {
+                        poll = queue.poll(100, TimeUnit.MICROSECONDS);
+                        queue.poll();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println(poll);
+
+                }
+
+            }
+        }).start();
+
+        while(true){
+            Thread.sleep(1111);
+        }
+
+
+    }
 }
