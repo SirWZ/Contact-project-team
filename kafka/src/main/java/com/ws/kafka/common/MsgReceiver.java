@@ -10,20 +10,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
-/**
- * @ProjectName: BigdataProject
- * @Package: com.yssh.bigdata.common.kafka.Consumer
- * @ClassName: Consumer
- * @Description:
- * @Author: Jackie Yang
- * @Date: 2017/7/4
- * @ModifyBy: jk
- * @UpdateUser: jk
- * @UpdateDate: 2017/7/4 14:57
- * @UpdateRemark: 说明本次修改内容
- * @Version: [v1.0]
- * @Copyright: 北京中燕信息技术有限公司
- */
+
 public class MsgReceiver implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(MsgReceiver.class);
     private BlockingQueue<Map<TopicPartition, OffsetAndMetadata>> commitQueue = new LinkedBlockingQueue<>();

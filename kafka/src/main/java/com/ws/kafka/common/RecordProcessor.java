@@ -14,20 +14,7 @@ import java.util.Map;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
-/**
- * @ProjectName: BigdataProject
- * @Package: com.yssh.bigdata.common.kafka.RecordProcessor
- * @ClassName: RecordProcessor
- * @Description:
- * @Author: Jackie Yang
- * @Date: 2017/7/4
- * @ModifyBy: jk
- * @UpdateUser: jk
- * @UpdateDate: 2017/7/4 16:26
- * @UpdateRemark: 说明本次修改内容
- * @Version: [v1.0]
- * @Copyright: 北京中燕信息技术有限公司
- */
+
 public class RecordProcessor implements Runnable {
     private static Logger logger = LoggerFactory.getLogger(RecordProcessor.class);
     final ExecutorService fixedThreadPool = Executors.newFixedThreadPool(50);

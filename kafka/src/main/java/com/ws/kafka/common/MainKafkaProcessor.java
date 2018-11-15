@@ -8,20 +8,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * @ProjectName: BigdataProject
- * @Package: com.yssh.bigdata.common.kafka.MainKafkaProcessor
- * @ClassName: MainKafkaProcessor
- * @Description:
- * @Author: Jackie Yang
- * @Date: 2017/7/6
- * @ModifyBy: jk
- * @UpdateUser: jk
- * @UpdateDate: 2017/7/6 20:35
- * @UpdateRemark: 说明本次修改内容
- * @Version: [v1.0]
- * @Copyright: 北京中燕信息技术有限公司
- */
+
 public class MainKafkaProcessor {
     private static final Logger logger = LoggerFactory.getLogger(MainKafkaProcessor.class);
     //订阅的topic
