@@ -48,6 +48,7 @@ public class Application {
         kafkaProcessor.main();
         try {
             //System.out.println("!");
+            //System.out.println("!");
             Thread.sleep(Long.MAX_VALUE);
         } catch (InterruptedException e) {
             e.printStackTrace();
