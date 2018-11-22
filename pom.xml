@@ -15,14 +15,14 @@
         <module>spark</module>
         <module>mapreduce-yarn</module>
         <module>solr</module>
-        <module>hdfs</module>
         <module>restAPI</module>
         <module>bash</module>
         <module>kafka</module>
         <module>hbase</module>
-        <module>hdfs</module>
         <module>hdfsclient</module>
         <module>java</module>
+        <module>spark2</module>
+        <module>cmd</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -263,6 +263,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.0.0</version>
                 <executions>
                     <!-- Add src/main/scala to source path of Eclipse -->
                     <execution>

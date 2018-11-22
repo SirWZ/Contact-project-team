@@ -44,35 +44,9 @@ public class Test {
     }
 
     @RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public String save(@RequestBody Entiry entiry) {
+    public String save(@RequestBody KV entiry) {
 
         return String.format("{\"value\":%s}", 111);
-    }
-
-    class Entiry {
-        private String name;
-        private String value;
-
-        public Entiry(String name, String value) {
-            this.name = name;
-            this.value = value;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        public void setValue(String value) {
-            this.value = value;
-        }
     }
 
 }
