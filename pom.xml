@@ -25,6 +25,7 @@
         <module>cmd</module>
         <module>cmd</module>
         <module>GUI</module>
+        <module>yarn</module>
     </modules>
     <packaging>pom</packaging>
 

@@ -35,13 +35,16 @@ import org.apache.spark.sql.SparkSession
   */
 object Demo01 {
   def main(args: Array[String]): Unit = {
-    val sc = SparkSession.builder()
-  /*
-      <groupId>com.yssh.bgdata</groupId>
-    <artifactId>external</artifactId>
-    <version>1.0</version>
-    <properties>
-   */
+
+    val sc = new SparkContext("local", "local")
+    val seq = sc.parallelize(1 to 100)
+
+    val str=new String("asdasd")
+
+    seq.foreach(i => println("%s%s",str,i))
+    println("count => " + str)
+
+    sc.stop()
   }
 
 }
