@@ -1,8 +1,12 @@
 package com.ws.yarn.demo01;
 
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.conf.Configured;
+import org.apache.hadoop.net.NetUtils;
 import org.apache.hadoop.yarn.client.api.YarnClient;
 import org.apache.hadoop.yarn.client.api.async.AMRMClientAsync;
 import org.apache.hadoop.yarn.client.api.async.NMClientAsync;
+import org.apache.hadoop.yarn.util.ConverterUtils;
 
 /**
  * <p>
@@ -34,6 +38,16 @@ import org.apache.hadoop.yarn.client.api.async.NMClientAsync;
  */
 public class Application {
     public static void main(String args[]) {
+        Configuration configuration = new Configuration();
+        configuration.addResource("yarn-site.xml");
+        configuration.addResource("core-site.xml");
+
+//        YarnClient yarnClient = YarnClient.createYarnClient();
+//        yarnClient.init(configuration);
+//        yarnClient.start();
+
+        String hostname = NetUtils.getHostname();
+        System.out.println(hostname);
 
     }
 }
