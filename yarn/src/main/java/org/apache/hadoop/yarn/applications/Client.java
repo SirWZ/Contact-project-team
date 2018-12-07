@@ -229,7 +229,7 @@ public class Client {
    */
   public Client(Configuration conf) throws Exception  {
     this(
-      "org.apache.hadoop.yarn.applications.distributedshell.ApplicationMaster",
+      "org.apache.hadoop.yarn.applications.ApplicationMaster",
       conf);
   }
 
