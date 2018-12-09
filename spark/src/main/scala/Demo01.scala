@@ -34,22 +34,15 @@ import org.apache.spark.streaming.{Duration, Seconds, StreamingContext}
   */
 object Demo01 {
   def main(args: Array[String]): Unit = {
-    Logger.getRootLogger.setLevel(Level.ERROR)
+//    Logger.getRootLogger.setLevel(Level.ERROR)
+    val logger = Logger.getLogger("aaa")
     val sc = new SparkContext("local[2]", "local")
-    val ssc = new StreamingContext(sc, Seconds(5))
+    val rdd = sc.parallelize(List(1, 2, 3, 4, 5))
+    println(rdd.count())
 
-    val ds = ssc.socketTextStream("10.101.127.185", 9999)
-    val unit = ds.flatMap(_.split(" ")).map(s => (s, 1)).reduceByKey(_ + _)
-    val windwo = unit.window(Duration(10000), Duration(5000))
-    windwo.foreachRDD(rdd => println("RDD ID"+rdd.id))
-
-    windwo.transform {
-      rdd =>
-        rdd.sortBy(_._2)
-    }.print()
-    ssc.start()
-    ssc.awaitTermination()
-
+    logger.warn("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+    logger.error("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+    logger.fatal("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 
   }
 

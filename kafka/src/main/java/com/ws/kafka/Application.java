@@ -39,12 +39,12 @@ public class Application {
 
         MainKafkaProcessor kafkaProcessor = new MainKafkaProcessor();
 
-        kafkaProcessor.setServers("localhost:9092");
+        kafkaProcessor.setServers("10.101.127.141:9092");
         kafkaProcessor.setAlarmTopic("4234");
         kafkaProcessor.setGroup("testasda");
         Class<?> clazz = Class.forName(Test.class.getName());
         kafkaProcessor.setProcessorClazz(clazz);
-        kafkaProcessor.setThreadNum(10);
+        kafkaProcessor.setThreadNum(1);
         kafkaProcessor.main();
         try {
             //System.out.println("!");

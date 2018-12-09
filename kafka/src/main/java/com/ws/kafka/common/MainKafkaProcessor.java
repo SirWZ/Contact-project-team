@@ -47,7 +47,18 @@ public class MainKafkaProcessor {
         for (int i = 0; i < threadsNum; i++) {
             threads[i].start();
         }
-        logger.debug("finish creating" + threadsNum + " threads to consume kafka warn msg");
+
+
+//        try {
+//            Thread.sleep(60000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//
+//        MsgReceiver msgReceiver = new MsgReceiver(processorClazz, consumerConfig, alarmTopic, recordProcessorTasks, recordProcessorThreads);
+//        Thread thread = new Thread(msgReceiver);
+//
+//        thread.start();
     }
 
     //销毁启动的线程
@@ -80,8 +91,8 @@ public class MainKafkaProcessor {
                 .put("bootstrap.servers", servers)
                 .put("group.id", group)
                 .put("enable.auto.commit", "false")
-                .put("session.timeout.ms", "30000")
-                .put("request.timeout.ms", "70000")
+                .put("session.timeout.ms", "300000")
+                .put("request.timeout.ms", "700000")
                 .put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer")
                 .put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer")
                 .put("max.poll.records", 1000)

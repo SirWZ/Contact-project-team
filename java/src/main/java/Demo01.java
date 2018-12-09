@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 /**
  * <p>
  * 类名称：Demo01
@@ -31,4 +32,7 @@ import java.awt.event.ActionListener;
  * @version 1.0.0
  */
 public class Demo01 {
+    public static void main(String args[]) {
+        System.out.println("asdasdasdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    }
 }

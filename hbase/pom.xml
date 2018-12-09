@@ -36,8 +36,6 @@
             <groupId>org.scala-lang</groupId>
             <artifactId>scalap</artifactId>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.hbase/hbase -->
-
         <dependency>
             <groupId>org.apache.hbase</groupId>
             <artifactId>hbase-client</artifactId>

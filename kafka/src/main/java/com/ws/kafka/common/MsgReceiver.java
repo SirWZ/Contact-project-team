@@ -49,6 +49,7 @@ public class MsgReceiver implements Runnable {
                 new ConsumerRebalanceListener() {
                     boolean rewindOffsets = false;
 
+                    //消费者撤出时调用
                     @Override
                     public void onPartitionsRevoked(Collection<TopicPartition> topicPartitions) {
                         logger.debug("onPartitionsRevoked:{}", topicPartitions);
@@ -63,6 +64,7 @@ public class MsgReceiver implements Runnable {
                         }
                     }
 
+                    //重新平衡之后调用
                     @Override
                     public void onPartitionsAssigned(Collection<TopicPartition> partitions) {
                         logger.debug("onPartitionsAssigned:{}", partitions);
@@ -134,25 +136,6 @@ public class MsgReceiver implements Runnable {
                         processTask.addRecordToQueue(recordList);
                     }
 
-//                    for (final ConsumerRecord<String, String> record : records) {
-//                        String topic = record.topic();
-//                        int partition = record.partition();
-//                        TopicPartition topicPartition = new TopicPartition(topic, partition);
-//                        RecordProcessor processTask = recordProcessorTasks.get(topicPartition);
-//                        //如果当前分区还没有开始消费, 则就没有消费任务在map中
-//                        if (processTask == null) {
-//                            //生成新的处理任务和线程, 然后将其放入对应的map中进行保存
-//                            processTask = new RecordProcessor(commitQueue, processorClazz);
-//                            recordProcessorTasks.put(topicPartition, processTask);
-//                            Thread thread = new Thread(processTask);
-//                            thread.setName("Thread-for " + topicPartition.toString());
-//                            logger.info("start Thread: " + thread.getName());
-//                            thread.start();
-//                            recordProcessorThreads.put(topicPartition, thread);
-//                        }
-//                        //将消息放到
-//                        processTask.addRecordToQueue(record);
-//                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     logger.error("MsgReceiver exception " + e + " ignore it");
