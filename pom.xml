@@ -23,7 +23,6 @@
         <module>java</module>
         <module>spark2</module>
         <module>cmd</module>
-        <module>cmd</module>
         <module>GUI</module>
         <module>yarn</module>
     </modules>
