@@ -25,6 +25,7 @@
         <module>cmd</module>
         <module>GUI</module>
         <module>yarn</module>
+        <module>hadoop3</module>
     </modules>
     <packaging>pom</packaging>
 
