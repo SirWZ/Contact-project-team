@@ -1,5 +1,6 @@
 *.iml
-*.class
 target/
 output/
 .idea/
+*.attach_pid32669
+*/.attach_pid26994
