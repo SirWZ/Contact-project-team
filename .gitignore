@@ -2,5 +2,4 @@
 target/
 output/
 .idea/
-*.attach_pid32669
-*/.attach_pid26994
+*.attach_pid*
