@@ -126,7 +126,7 @@ public class Client {
   // Queue for App master
   private String amQueue = "";
   // Amt. of memory resource to request for to run the App Master
-  private int amMemory = 10; 
+  private int amMemory = 10;
   // Amt. of virtual core resource to request for to run the App Master
   private int amVCores = 1;
 
@@ -233,7 +233,7 @@ public class Client {
       conf);
   }
 
-  Client(String appMasterMainClass, Configuration conf) {
+  public Client(String appMasterMainClass, Configuration conf) {
     this.conf = conf;
     this.appMasterMainClass = appMasterMainClass;
     yarnClient = YarnClient.createYarnClient();

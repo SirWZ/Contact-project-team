@@ -798,7 +798,7 @@ public class ApplicationMaster {
   }
 
   @VisibleForTesting
-  static class NMCallbackHandler
+  public static class NMCallbackHandler
     implements NMClientAsync.CallbackHandler {
 
     private ConcurrentMap<ContainerId, Container> containers =
