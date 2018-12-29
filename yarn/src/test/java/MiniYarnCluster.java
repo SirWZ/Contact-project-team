@@ -98,11 +98,7 @@ public class MiniYarnCluster {
                         new Path(conf
                                 .get("yarn.timeline-service.leveldb-timeline-store.path")),
                         true);
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            LOG.info("setup thread sleep interrupted. message=" + e.getMessage());
-        }
+        System.in.read();
     }
 
     @After
