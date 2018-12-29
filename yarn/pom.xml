@@ -25,24 +25,13 @@
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-client</artifactId>
             <version>2.6.0-cdh5.8.3</version>
+            <exclusions>
+            </exclusions>
         </dependency>
-        <dependency>
-            <groupId>org.apache.hadoop</groupId>
-            <artifactId>hadoop-yarn-server-tests</artifactId>
-            <version>2.6.0-cdh5.8.3</version>
-            <scope>test</scope>
-        </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-minicluster -->
-        <dependency>
-            <groupId>org.apache.hadoop</groupId>
-            <artifactId>hadoop-minicluster</artifactId>
-            <version>2.6.0-cdh5.8.3</version>
             <scope>test</scope>
         </dependency>
 
@@ -85,6 +74,7 @@
                                         <exclude>META-INF/*.DSA</exclude>
                                         <exclude>META-INF/*.RSA</exclude>
                                         <exclude>log4j.properties</exclude>
+                                        <exclude>*slf4j*.jar</exclude>
                                     </excludes>
                                 </filter>
                             </filters>

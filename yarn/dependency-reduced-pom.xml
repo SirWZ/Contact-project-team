@@ -40,6 +40,7 @@
                     <exclude>META-INF/*.DSA</exclude>
                     <exclude>META-INF/*.RSA</exclude>
                     <exclude>log4j.properties</exclude>
+                    <exclude>*slf4j*.jar</exclude>
                   </excludes>
                 </filter>
               </filters>
