@@ -3,6 +3,6 @@ target/
 output/
 .idea/
 *.attach_pid*
-/yarn/src/main/resources/core-site.xml
-/yarn/src/main/resources/hdfs-site.xml
-/yarn/src/main/resources/yarn-site.xml
+core-site.xml
+hdfs-site.xml
+yarn-site.xml
