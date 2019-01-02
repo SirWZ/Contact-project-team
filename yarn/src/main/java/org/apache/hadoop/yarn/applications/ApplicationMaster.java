@@ -254,7 +254,7 @@ public class ApplicationMaster {
   // Hardcoded path to shell script in launch container's local env
   private static final String ExecShellStringPath = Client.SCRIPT_PATH + ".sh";
   private static final String ExecBatScripStringtPath = Client.SCRIPT_PATH
-      + ".bat";
+          + ".bat";
 
   // Hardcoded path to custom log_properties
   private static final String log4jPath = "log4j.properties";
@@ -550,7 +550,7 @@ public class ApplicationMaster {
     appSubmitterUgi.addCredentials(credentials);
 
     publishApplicationAttemptEvent(timelineClient, appAttemptID.toString(),
-        DSEvent.DS_APP_ATTEMPT_START, domainId, appSubmitterUgi);
+      DSEvent.DS_APP_ATTEMPT_START, domainId, appSubmitterUgi);
 
     AMRMClientAsync.CallbackHandler allocListener = new RMCallbackHandler();
     amRMClient = AMRMClientAsync.createAMRMClientAsync(1000, allocListener);
@@ -606,11 +606,11 @@ public class ApplicationMaster {
     int numTotalContainersToRequest =
         numTotalContainers - previousAMRunningContainers.size();
     // Setup ask for containers from RM
-    // Send request for containers to RM
-    // Until we get our fully allocated quota, we keep on polling RM for
-    // containers
-    // Keep looping until all the containers are launched and shell script
-    // executed on them ( regardless of success/failure).
+    //    // Send request for containers to RM
+    //    // Until we get our fully allocated quota, we keep on polling RM for
+    //    // containers
+    //    // Keep looping until all the containers are launched and shell script
+    //    // executed on them ( regardless of success/failure).
     for (int i = 0; i < numTotalContainersToRequest; ++i) {
       ContainerRequest containerAsk = setupContainerAskForRM();
       amRMClient.addContainerRequest(containerAsk);
