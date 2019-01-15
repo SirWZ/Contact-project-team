@@ -1,3 +1,4 @@
+import com.alibaba.fastjson.JSONObject;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.HColumnDescriptor;
@@ -20,7 +21,9 @@ import org.apache.hadoop.hbase.filter.SingleColumnValueFilter;
 import org.apache.hadoop.hbase.filter.CompareFilter.CompareOp;
 import org.apache.hadoop.hbase.util.Bytes;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 
 /**
@@ -53,16 +56,31 @@ import java.io.IOException;
  */
 public class De {
     public static void main(String args[]) throws IOException {
+        File file = new File("hbase.json");
+        PrintWriter writer = new PrintWriter(file);
+
         Configuration configuration = HBaseConfiguration.create();
         configuration.set("hbase.zookeeper.quorum", "10.101.127.166:2181");
-        HTable table = new HTable(configuration, "LIMS");
+        HTable table = new HTable(configuration, "HUAYILIEJIE");
+        Scan scan = new Scan();
+        scan.setStartRow("2018-01-01 00:00".getBytes());
+        scan.setStopRow("2018-01-03 00:00".getBytes());
 
-        ResultScanner scanner = table.getScanner(new Scan());
+
+        ResultScanner scanner = table.getScanner(scan);
 
         scanner.forEach(r -> {
-            byte[] value = r.getValue("fam1".getBytes(),"IP_INPUT_VALUE".getBytes());
-            System.out.println(Bytes.toString(value));
+            JSONObject object = new JSONObject();
+            String value = Bytes.toString(r.getValue("fam1".getBytes(), "IP_INPUT_VALUE".getBytes()));
+            String name = Bytes.toString(r.getValue("fam1".getBytes(), "IP_INPUT_NAME".getBytes()));
+            String row = Bytes.toString(r.getRow());
+            object.put("name", name);
+            object.put("value", value);
+            object.put("row", row);
+            writer.write(object.toJSONString());
         });
+        writer.flush();
+        writer.close();
 
 
     }
