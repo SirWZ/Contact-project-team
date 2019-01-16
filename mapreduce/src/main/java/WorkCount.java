@@ -9,6 +9,7 @@ import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.StringTokenizer;
@@ -56,6 +57,12 @@ public class WorkCount {
                 context.write(text, intWritable);
             }
         }
+
+        @Override
+        public void run(Context context) throws IOException, InterruptedException {
+
+            super.run(context);
+        }
     }
 
 
@@ -73,6 +80,9 @@ public class WorkCount {
 
 
     public static void main(String args[]) throws IOException, ClassNotFoundException, InterruptedException {
+        File file = new File("mapreduce/output");
+        deleteDir(file);
+
         Configuration conf = new Configuration();
         Job job = new Job(conf);
         job.setMapperClass(Map.class);
@@ -87,6 +97,19 @@ public class WorkCount {
         boolean b = job.waitForCompletion(true);
         System.out.println(b);
 
+
     }
 
+    private static boolean deleteDir(File dir) {
+        if (dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+        return dir.delete();
+    }
 }
