@@ -22,9 +22,13 @@ import org.apache.hadoop.hbase.filter.CompareFilter.CompareOp;
 import org.apache.hadoop.hbase.util.Bytes;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-
+import java.util.Calendar;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * <p>
@@ -54,34 +58,80 @@ import java.io.PrintWriter;
  *
  * @version 1.0.0
  */
-public class De {
-    public static void main(String args[]) throws IOException {
-        File file = new File("hbase.json");
-        PrintWriter writer = new PrintWriter(file);
+public class De implements Runnable {
 
-        Configuration configuration = HBaseConfiguration.create();
-        configuration.set("hbase.zookeeper.quorum", "10.101.127.166:2181");
-        HTable table = new HTable(configuration, "HUAYILIEJIE");
-        Scan scan = new Scan();
-        scan.setStartRow("2018-01-01 00:00".getBytes());
-        scan.setStopRow("2018-01-03 00:00".getBytes());
+    private String startTime;
+    private String stopTime;
+    private String filename;
+    private CountDownLatch c;
+
+    public De(String startTime, String stopTime, String filename, CountDownLatch c) {
+        this.startTime = startTime;
+        this.stopTime = stopTime;
+        this.filename = filename;
+        this.c = c;
+    }
+
+    @Override
+    public void run() {
+
+        File file = new File(filename);
+        final PrintWriter writer;
+        try {
+            writer = new PrintWriter(file);
+
+            Configuration configuration = HBaseConfiguration.create();
+            configuration.set("hbase.zookeeper.quorum", "10.101.127.166:2181,10.101.127.167:2181,10.101.127.168:2181");
+            HTable table = new HTable(configuration, "YIERCHUN");
+            Scan scan = new Scan(startTime.getBytes(), stopTime.getBytes());
+
+            ResultScanner scanner = table.getScanner(scan);
+
+            scanner.forEach(r -> {
+                JSONObject object = new JSONObject();
+                String value = Bytes.toString(r.getValue("fam1".getBytes(), "IP_INPUT_VALUE".getBytes()));
+                String name = Bytes.toString(r.getValue("fam1".getBytes(), "IP_NAME".getBytes()));
+                String row = Bytes.toString(r.getRow());
+                String time = row.substring(0, 16);
+                object.put("name", name);
+                object.put("value", value);
+                object.put("time", time);
+                String[] split = time.substring(0, 9).split("-");
+                writer.write(object.toJSONString() + "\n");
+            });
+            writer.flush();
+            writer.close();
+            System.out.println(filename + "完成!");
+            c.countDown();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
-        ResultScanner scanner = table.getScanner(scan);
+    }
 
-        scanner.forEach(r -> {
-            JSONObject object = new JSONObject();
-            String value = Bytes.toString(r.getValue("fam1".getBytes(), "IP_INPUT_VALUE".getBytes()));
-            String name = Bytes.toString(r.getValue("fam1".getBytes(), "IP_INPUT_NAME".getBytes()));
-            String row = Bytes.toString(r.getRow());
-            object.put("name", name);
-            object.put("value", value);
-            object.put("row", row);
-            writer.write(object.toJSONString());
-        });
-        writer.flush();
-        writer.close();
+    public static void main(String args[]) throws IOException, InterruptedException {
 
+        String[] arr = {
+                "2018-10-01 00:00",
+                "2018-11-01 00:00",
+                "2018-12-01 00:00",
+                "2019-01-01 00:00",
+                "2019-02-01 00:00",
+                "2019-03-01 00:00"
+        };
+        int threadNumber = arr.length;
+        final CountDownLatch countDownLatch = new CountDownLatch(threadNumber);
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        for (int i = 0; i < arr.length; i++) {
+            String start = arr[i];
+            String stop = arr.length - 1 == i ? "2019-04-01 00:00" : arr[i + 1];
+            String filename = start.substring(0, 7);
 
+            De de = new De(start, stop, "D:\\乙二醇六个月数据\\" + filename + ".json", countDownLatch);
+            executorService.submit(de);
+        }
+
+        countDownLatch.await();
     }
 }

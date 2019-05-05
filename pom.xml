@@ -26,6 +26,9 @@
         <module>GUI</module>
         <module>yarn</module>
         <module>hadoop3</module>
+        <module>tika</module>
+        <module>zookeeper</module>
+        <module>jdbc-odbc</module>
     </modules>
     <packaging>pom</packaging>
 

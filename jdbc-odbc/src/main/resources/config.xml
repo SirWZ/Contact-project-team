@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<confg>
+    <dataSource valid="true">
+        <properties>
+            <name>url</name>
+            <value>asdasd</value>
+            <descript></descript>
+        </properties>
+        <properties>
+            <name>user</name>
+            <value></value>
+            <descript></descript>
+        </properties>
+        <properties>
+            <name>passwd</name>
+            <value></value>
+            <descript></descript>
+        </properties>
+    </dataSource>
+
+    <dataSource valid="false">
+        <properties>
+            <name>url</name>
+            <value>aaaaaaaaaaaa</value>
+            <descript></descript>
+        </properties>
+        <properties>
+            <name>user</name>
+            <value>aa</value>
+            <descript></descript>
+        </properties>
+        <properties>
+            <name>passwd</name>
+            <value>aaa</value>
+            <descript></descript>
+        </properties>
+    </dataSource>
+    <result>
+        <properties>
+            <name>filePath</name>
+            <value></value>
+        </properties>
+
+    </result>
+
+
+</confg>

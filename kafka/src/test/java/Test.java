@@ -1,7 +1,12 @@
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
 
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
@@ -38,33 +43,16 @@ public class Test {
     @org.junit.Test
     public void test() throws InterruptedException {
 
-        BlockingQueue<String> queue = new LinkedBlockingQueue<>();
-        queue.put("A");
-        queue.put("b");
-        queue.put("c");
-        queue.put("d");
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (!Thread.currentThread().isInterrupted()) {
+        Properties kafkaProps = new Properties();
+        kafkaProps.put("bootstrap.servers", "10.101.127.141:9092");
+        kafkaProps.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        kafkaProps.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        KafkaProducer<String, String> producer = new KafkaProducer<String, String>(kafkaProps);
+        ProducerRecord<String, String> record = new ProducerRecord<>("test", "Precision Products", "test");//Topic Key Value
 
-                    String poll = null;
-                    try {
-                        poll = queue.poll(100, TimeUnit.MICROSECONDS);
-                        queue.poll();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    System.out.println(poll);
-
-                }
-
-            }
-        }).start();
-
-        while(true){
-            Thread.sleep(1111);
-        }
+        Future<RecordMetadata> send = producer.send(record);
+        producer.flush();
+        producer.close();
 
 
     }
