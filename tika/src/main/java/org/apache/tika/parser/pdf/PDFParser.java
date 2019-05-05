@@ -47,7 +47,7 @@ import java.util.*;
  * ClassName：PDFParser
  * </p>
  * <p>
- * Description：pdf解析器
+ * Description：pdf解析器 带分页
  * </p>
  * <p>
  * User：sun
@@ -215,7 +215,8 @@ public class PDFParser extends AbstractParser implements Initializable {
         if (xmp != null) {
             try {
                 dcSchema = xmp.getDublinCoreSchema();
-            } catch (IOException e) {}
+            } catch (IOException e) {
+            }
 
             JempboxExtractor.extractXMPMM(xmp, metadata);
         }
@@ -691,9 +692,9 @@ public class PDFParser extends AbstractParser implements Initializable {
             setInitializableProblemHandler(InitializableProblemHandler.IGNORE);
         } else if ("info".equalsIgnoreCase(name)) {
             setInitializableProblemHandler(InitializableProblemHandler.INFO);
-        }   else if ("warn".equalsIgnoreCase(name)) {
+        } else if ("warn".equalsIgnoreCase(name)) {
             setInitializableProblemHandler(InitializableProblemHandler.WARN);
-        }   else if ("throw".equalsIgnoreCase(name)) {
+        } else if ("throw".equalsIgnoreCase(name)) {
             setInitializableProblemHandler(InitializableProblemHandler.THROW);
         }
     }
@@ -701,6 +702,7 @@ public class PDFParser extends AbstractParser implements Initializable {
     public void setInitializableProblemHandler(InitializableProblemHandler initializableProblemHandler) {
         this.initializableProblemHandler = initializableProblemHandler;
     }
+
     //can return null!
     private Document loadDOM(PDMetadata pdMetadata, Metadata metadata, ParseContext context) {
         if (pdMetadata == null) {
@@ -715,7 +717,7 @@ public class PDFParser extends AbstractParser implements Initializable {
                 return null;
             }
             return XMLReaderUtils.buildDOM(is, context);
-        } catch (IOException|SAXException|TikaException e) {
+        } catch (IOException | SAXException | TikaException e) {
             EmbeddedDocumentUtil.recordException(e, metadata);
         } finally {
             IOUtils.closeQuietly(is);

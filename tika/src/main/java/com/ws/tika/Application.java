@@ -4,12 +4,10 @@ import org.apache.tika.config.TikaConfig;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
-import org.apache.tika.parser.ParseContext;
-import org.apache.tika.sax.BodyContentHandler;
+import org.apache.tika.sax.PageContentHandler;
 import org.xml.sax.SAXException;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -51,8 +49,9 @@ public class Application {
 
         String content = "";
         AutoDetectParser parser = new AutoDetectParser(config);
-        BodyContentHandler handler = new BodyContentHandler(10000 * 10000);
+        PageContentHandler handler = new PageContentHandler(10000 * 10000);
         Metadata metadata = new Metadata();
+
         try {
 
             parser.parse(inputStream, handler, metadata);
