@@ -7,11 +7,14 @@ import org.apache.jempbox.xmp.XMPSchemaDublinCore;
 import org.apache.jempbox.xmp.pdfa.XMPSchemaPDFAId;
 import org.apache.pdfbox.cos.*;
 import org.apache.pdfbox.io.MemoryUsageSetting;
+import org.apache.pdfbox.multipdf.Splitter;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentInformation;
+import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.common.PDMetadata;
 import org.apache.pdfbox.pdmodel.encryption.AccessPermission;
 import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
+import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.poi.util.IOUtils;
 import org.apache.tika.config.Field;
 import org.apache.tika.config.Initializable;
@@ -30,7 +33,7 @@ import org.apache.tika.parser.PasswordProvider;
 import org.apache.tika.parser.image.xmp.JempboxExtractor;
 import org.apache.tika.parser.ocr.TesseractOCRParser;
 import org.apache.tika.parser.pdf.*;
-import org.apache.tika.sax.XHTMLContentHandler;
+import org.apache.tika.sax.*;
 import org.apache.tika.utils.XMLReaderUtils;
 import org.w3c.dom.Document;
 import org.xml.sax.ContentHandler;
@@ -71,7 +74,7 @@ import java.util.*;
  * @author sun
  * @version 1.0.0
  */
-public class PDFParser extends AbstractParser implements Initializable {
+public class PDFPageInfoParser extends AbstractParser implements Initializable {
 
 
     private static volatile boolean HAS_WARNED = false;
@@ -133,6 +136,25 @@ public class PDFParser extends AbstractParser implements Initializable {
             AccessChecker checker = localConfig.getAccessChecker();
             checker.check(metadata);
             if (handler != null) {
+
+                Splitter splitter = new Splitter();
+
+                splitter.setStartPage(1);
+                splitter.setEndPage(pdfDocument.getNumberOfPages());
+
+                try {
+                    List<PDDocument> documents = splitter.split(pdfDocument);
+
+                    for (int i = 0; i < documents.size(); i++) {
+                        PDDocument doc = documents.get(i);
+
+
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
                 if (shouldHandleXFAOnly(pdfDocument, localConfig)) {
                     handleXFAOnly(pdfDocument, handler, metadata, context);
                 } else if (localConfig.getOcrStrategy().equals(PDFParserConfig.OCR_STRATEGY.OCR_ONLY)) {
@@ -153,6 +175,30 @@ public class PDFParser extends AbstractParser implements Initializable {
                 pdfDocument.close();
             }
         }
+    }
+
+    private void parseByPageHandler(PageContentHandler pageContentHandler, PDDocument document) {
+        if (document == null) {
+            return;
+        }
+
+        Splitter splitter = new Splitter();
+
+        splitter.setStartPage(1);
+        splitter.setEndPage(document.getNumberOfPages());
+
+        try {
+            List<PDDocument> documents = splitter.split(document);
+            PDFTextStripper textStripper = new PDFTextStripper();
+            for (int i = 0; i < documents.size(); i++) {
+                PDDocument doc = documents.get(i);
+                String text = textStripper.getText(doc);
+                pageContentHandler.addDate(String.valueOf(i + 1), text);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private String getPassword(Metadata metadata, ParseContext context) {
@@ -322,6 +368,7 @@ public class PDFParser extends AbstractParser implements Initializable {
             }
         }
     }
+
 
     /**
      * Try to extract all multilingual items from the XMPSchema

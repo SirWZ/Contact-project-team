@@ -4,6 +4,7 @@ import org.xml.sax.ContentHandler;
 
 import java.io.OutputStream;
 import java.io.Writer;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -35,33 +36,27 @@ import java.util.Map;
  * @author sun
  * @version 1.0.0
  */
-public class PageContentHandler extends BodyContentHandler {
+public class PageContentHandler extends ContentHandlerDecorator {
 
-    private Map<String, Object> data;
+    private Map<String, Object> data = new HashMap<String, Object>();
 
     public Map<String, Object> getData() {
         return data;
     }
 
     public void setData(Map<String, Object> data) {
-        this.data = data;
+        this.data.putAll(data);
     }
+
+    public void addDate(String k, Object v) {
+        this.data.put(k, v);
+    }
+
 
     public PageContentHandler(ContentHandler handler) {
         super(handler);
     }
 
-    public PageContentHandler(Writer writer) {
-        super(writer);
-    }
-
-    public PageContentHandler(OutputStream stream) {
-        super(stream);
-    }
-
-    public PageContentHandler(int writeLimit) {
-        super(writeLimit);
-    }
 
     public PageContentHandler() {
         super();
@@ -70,6 +65,8 @@ public class PageContentHandler extends BodyContentHandler {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
+        if (this.data == null)
+            return "";
         for (Map.Entry<String, Object> entry : this.data.entrySet()) {
             builder.append(entry.getKey());
             builder.append("\r\n");

@@ -9,7 +9,7 @@
 <!--            <parser-exclude class="org.apache.tika.parser.executable.ExecutableParser"/>-->
 <!--        </parser>-->
         <!-- Use a different parser for PDF -->
-        <parser class="org.apache.tika.parser.pdf.PDFParser">
+        <parser class="org.apache.tika.parser.pdf.PDFPageInfoParser">
             <mime>application/pdf</mime>
         </parser>
     </parsers>
