@@ -3,7 +3,7 @@
     <dataSource valid="true">
         <properties>
             <name>url</name>
-            <value>asdasd</value>
+            <value>jdbc:odbc:233</value>
             <descript></descript>
         </properties>
         <properties>

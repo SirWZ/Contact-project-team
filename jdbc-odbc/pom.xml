@@ -45,6 +45,18 @@
             <version>2.6</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.26</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.26</version>
+        </dependency>
+
+
 
     </dependencies>
     <build>
@@ -71,7 +83,16 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>appassembler-maven-plugin</artifactId>
                 <version>1.2.1</version>
-
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>
+                                assemble
+                            </goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
 
                     <repositoryLayout>flat</repositoryLayout>
@@ -102,7 +123,7 @@
 
                     <programs>
                         <program>
-                            <mainClass>com</mainClass>
+                            <mainClass>com.zyxx.Application</mainClass>
                             <name>startup</name>
                         </program>
                     </programs>

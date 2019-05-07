@@ -128,7 +128,7 @@ public class De implements Runnable {
             String stop = arr.length - 1 == i ? "2019-04-01 00:00" : arr[i + 1];
             String filename = start.substring(0, 7);
 
-            De de = new De(start, stop, "D:\\乙二醇六个月数据\\" + filename + ".json", countDownLatch);
+            De de = new De(start, stop, "C:\\software\\github\\root\\hbase\\tmp\\" + filename + ".json", countDownLatch);
             executorService.submit(de);
         }
 
