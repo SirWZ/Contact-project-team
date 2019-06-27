@@ -74,7 +74,7 @@ public class De implements Runnable {
 
     @Override
     public void run() {
-
+        System.out.println("提取文件开始:" + filename);
         File file = new File(filename);
         final PrintWriter writer;
         try {
@@ -113,19 +113,16 @@ public class De implements Runnable {
     public static void main(String args[]) throws IOException, InterruptedException {
 
         String[] arr = {
-                "2018-10-01 00:00",
-                "2018-11-01 00:00",
-                "2018-12-01 00:00",
-                "2019-01-01 00:00",
                 "2019-02-01 00:00",
-                "2019-03-01 00:00"
+                "2019-03-01 00:00",
+                "2019-04-01 00:00"
         };
-        int threadNumber = arr.length;
+        int threadNumber = arr.length - 1;
         final CountDownLatch countDownLatch = new CountDownLatch(threadNumber);
         ExecutorService executorService = Executors.newCachedThreadPool();
         for (int i = 0; i < arr.length; i++) {
             String start = arr[i];
-            String stop = arr.length - 1 == i ? "2019-04-01 00:00" : arr[i + 1];
+            String stop = arr.length - 2 == i ? arr[++i] : arr[i + 1];
             String filename = start.substring(0, 7);
 
             De de = new De(start, stop, "C:\\software\\github\\root\\hbase\\tmp\\" + filename + ".json", countDownLatch);

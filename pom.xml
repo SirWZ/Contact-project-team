@@ -10,7 +10,6 @@
     <modules>
         <module>mapreduce</module>
         <module>common</module>
-        <module>test</module>
         <module>akka</module>
         <module>spark</module>
         <module>mapreduce-yarn</module>
