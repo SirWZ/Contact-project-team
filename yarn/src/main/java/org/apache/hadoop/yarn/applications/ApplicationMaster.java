@@ -283,6 +283,11 @@ public class ApplicationMaster {
     try {
       ApplicationMaster appMaster = new ApplicationMaster();
       LOG.info("Initializing ApplicationMaster");
+      LOG.info("Initializing ApplicationMaster");
+      LOG.info("Initializing ApplicationMaster");
+      LOG.info("Initializing ApplicationMaster");
+      LOG.info("Initializing ApplicationMaster");
+      LOG.info("Initializing ApplicationMaster");
       boolean doRun = appMaster.init(args);
       if (!doRun) {
         System.exit(0);
