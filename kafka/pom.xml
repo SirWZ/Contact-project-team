@@ -12,7 +12,7 @@
     <artifactId>kafka</artifactId>
 
     <properties>
-        <kafka.version>0.10.0.0</kafka.version>
+        <kafka.version>0.10.2.2</kafka.version>
         <jdk.version>1.8</jdk.version>
         <google.guava.version>19.0</google.guava.version>
         <junit.version>4.11</junit.version>
